@@ -659,71 +659,232 @@ app.listen(port, () => {
 </details>
 
 - [ ] Create public/styles.css:
-```css
-    .mood-btn {
-        transition: all 0.3s ease;
-        cursor: pointer;
-    }
 
-    .mood-btn:hover {
-        transform: translateY(-2px);
-    }
+<details>
+  <summary>Style for all mood selection buttons</summary>
+  
+  ```css
+  /* Style for all mood selection buttons */
+  .mood-btn {
+      /* Smooth transition for all properties over 0.3 seconds */
+      transition: all 0.3s ease;
+      /* Change cursor to pointer on hover to indicate clickable element */
+      cursor: pointer;
+  }
+  ```
+</details>
 
-    #recipe-container {
-        transition: opacity 0.3s ease;
-    }
+<details>
+  <summary>Interactive hover effect for mood buttons</summary>
+  
+  ```css
+  /* Interactive hover effect for mood buttons */
+  .mood-btn:hover {
+      /* Slight upward movement on hover for interactive feedback */
+      /* -2px moves the button up by 2 pixels */
+      transform: translateY(-2px);
+  }
+  ```
+</details>
 
-    .hidden {
-        display: none;
-    }
-```
+<details>
+  <summary>Styling for the container that holds recipe details</summary>
+  
+  ```css
+  /* Styling for the container that holds recipe details */
+  #recipe-container {
+      /* Smooth opacity transition for showing/hiding recipe content */
+      /* Used when toggling recipe visibility */
+      transition: opacity 0.3s ease;
+  }
+  ```
+</details>
+
+<details>
+  <summary>Utility class for hiding elements</summary>
+  
+  ```css
+  /* Utility class for hiding elements */
+  .hidden {
+      /* Completely removes element from layout flow */
+      /* Used to toggle visibility of recipe container */
+      display: none;
+  }
+  ```
+</details>
+
+<details>
+  <summary>public/styles.css</summary>
+  
+  ```css
+      .mood-btn {
+          transition: all 0.3s ease;
+          cursor: pointer;
+      }
+  
+      .mood-btn:hover {
+          transform: translateY(-2px);
+      }
+  
+      #recipe-container {
+          transition: opacity 0.3s ease;
+      }
+  
+      .hidden {
+          display: none;
+      }
+  ```
+</details>
 
 - [ ] Create public/script.js:
-```js
-    document.addEventListener('DOMContentLoaded', () => {
-        const moodButtons = document.querySelectorAll('.mood-btn');
-        const recipeContainer = document.getElementById('recipe-container');
-        const recipeName = document.getElementById('recipe-name');
-        const ingredientsList = document.getElementById('ingredients');
-        const instructions = document.getElementById('instructions');
-        const newRecipeBtn = document.getElementById('new-recipe');
 
-        let currentMood = null;
+<details>
+  <summary>Initial Setup and DOM Elements</summary>
+  
+  ```js
+  // Wait for DOM to be fully loaded before running any code
+  document.addEventListener("DOMContentLoaded", () => {
+    // Get references to all required DOM elements
+    // Query all mood selection buttons
+    const moodButtons = document.querySelectorAll(".mood-btn");
+    // Get container for recipe display
+    const recipeContainer = document.getElementById("recipe-container");
+    // Get element for recipe title
+    const recipeName = document.getElementById("recipe-name");
+    // Get element for ingredients list
+    const ingredientsList = document.getElementById("ingredients");
+    // Get element for cooking instructions
+    const instructions = document.getElementById("instructions");
+    // Get reference to "Get Another Recipe" button
+    const newRecipeBtn = document.getElementById("new-recipe");
+  
+    // Track current mood selection
+    let currentMood = null;
+  ```
+</details>
 
-        moodButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                currentMood = button.dataset.mood;
-                getRecipe(currentMood);
-            });
-        });
-
-        newRecipeBtn.addEventListener('click', () => {
-            if (currentMood) {
-                getRecipe(currentMood);
-            }
-        });
-
-        async function getRecipe(mood) {
-            try {
-                const response = await fetch(`/api/recipes/${mood}`);
-                if (!response.ok) {
-                    throw new Error('No recipes found for this mood');
-                }
-                const recipe = await response.json();
-                
-                recipeName.textContent = recipe.name;
-                ingredientsList.innerHTML = recipe.ingredients.split(',').map(ingredient => 
-                    `<li>${ingredient.trim()}</li>`
-                ).join('');
-                instructions.textContent = recipe.instructions;
-                
-                recipeContainer.classList.remove('hidden');
-            } catch (error) {
-                alert(error.message);
-            }
-        }
+<details>
+  <summary>Event Listeners for Mood Buttons</summary>
+  
+  ```js
+  // Add click handlers to all mood buttons
+  moodButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      // Store the selected mood from data-mood attribute
+      currentMood = button.dataset.mood;
+      // Fetch and display a recipe for the selected mood
+      getRecipe(currentMood);
     });
-```
+  });
+  ```
+</details>
+
+<details>
+  <summary>Event Listener for New Recipe Button</summary>
+  
+  ```js
+  // Handle clicks on "Get Another Recipe" button
+  newRecipeBtn.addEventListener("click", () => {
+    // Only fetch new recipe if a mood has been selected
+    if (currentMood) {
+      getRecipe(currentMood);
+    }
+  });
+  ```
+</details>
+
+<details>
+  <summary>Recipe Fetching and Display Function</summary>
+  
+  ```js
+    // Async function to fetch and display recipes
+    async function getRecipe(mood) {
+      try {
+        // Make API request to backend for recipe
+        const response = await fetch(`/api/recipes/${mood}`);
+        
+        // Check if request was successful
+        if (!response.ok) {
+          throw new Error("No recipes found for this mood");
+        }
+        
+        // Parse JSON response
+        const recipe = await response.json();
+  
+        // Update DOM with recipe details
+        // Set recipe name
+        recipeName.textContent = recipe.name;
+        
+        // Convert comma-separated ingredients into list items
+        ingredientsList.innerHTML = recipe.ingredients
+          .split(",")                                    // Split into array
+          .map((ingredient) => `<li>${ingredient.trim()}</li>`)  // Create list items
+          .join("");                                     // Combine into HTML string
+        
+        // Set cooking instructions
+        instructions.textContent = recipe.instructions;
+  
+        // Make recipe container visible
+        recipeContainer.classList.remove("hidden");
+      } catch (error) {
+        // Show error message if something goes wrong
+        alert(error.message);
+      }
+    }
+  });
+  ```
+</details>
+
+<details>
+  <summary>public/script.js</summary>
+  
+  ```js
+      document.addEventListener('DOMContentLoaded', () => {
+          const moodButtons = document.querySelectorAll('.mood-btn');
+          const recipeContainer = document.getElementById('recipe-container');
+          const recipeName = document.getElementById('recipe-name');
+          const ingredientsList = document.getElementById('ingredients');
+          const instructions = document.getElementById('instructions');
+          const newRecipeBtn = document.getElementById('new-recipe');
+  
+          let currentMood = null;
+  
+          moodButtons.forEach(button => {
+              button.addEventListener('click', () => {
+                  currentMood = button.dataset.mood;
+                  getRecipe(currentMood);
+              });
+          });
+  
+          newRecipeBtn.addEventListener('click', () => {
+              if (currentMood) {
+                  getRecipe(currentMood);
+              }
+          });
+  
+          async function getRecipe(mood) {
+              try {
+                  const response = await fetch(`/api/recipes/${mood}`);
+                  if (!response.ok) {
+                      throw new Error('No recipes found for this mood');
+                  }
+                  const recipe = await response.json();
+                  
+                  recipeName.textContent = recipe.name;
+                  ingredientsList.innerHTML = recipe.ingredients.split(',').map(ingredient => 
+                      `<li>${ingredient.trim()}</li>`
+                  ).join('');
+                  instructions.textContent = recipe.instructions;
+                  
+                  recipeContainer.classList.remove('hidden');
+              } catch (error) {
+                  alert(error.message);
+              }
+          }
+      });
+  ```
+</details>
+
 
 ## **Task 5: Running the Application**
 
