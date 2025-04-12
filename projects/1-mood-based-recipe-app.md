@@ -100,7 +100,7 @@
 </details>  
 
 <details>
-  <summary>Create a Helper Wrapper function to convert SQLite's callback-based operations into Promises</summary>
+  <summary>Create Helper Wrapper function to convert SQLite's callback-based operations into Promises</summary>
   
   ```js
   // Helper function to convert SQLite's callback-based operations into Promises
@@ -265,6 +265,128 @@
 
 - [ ] Create server.js file:
 
+<details>
+  <summary>Import Express.js, SQLite3 and Node.js path Dependencies</summary>
+  
+  ```js
+  // Express.js - Web application framework
+  const express = require("express");
+  
+  // SQLite3 database driver with verbose mode for detailed errors
+  const sqlite3 = require("sqlite3").verbose();
+  
+  // Node.js path module for handling file paths
+  const path = require("path");
+  ```
+</details>
+
+<details>
+  <summary>Initialize Express and DB Configurations</summary>
+  
+  ```js
+  // Create an Express application instance
+  const app = express();
+  
+  // Define the port number for the server
+  const port = 3000;
+  
+  // Initialize SQLite database connection
+  // This will create recipes.db if it doesn't exist
+  const db = new sqlite3.Database("recipes.db");
+  ```
+</details>
+
+<details>
+  <summary>Create Database Table</summary>
+  
+  ```js
+  // Use serialize to ensure database operations occur sequentially
+  db.serialize(() => {
+    // Create the recipes table if it doesn't already exist
+    db.run(`CREATE TABLE IF NOT EXISTS recipes (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,  // Unique identifier
+          name TEXT NOT NULL,                    // Recipe name
+          ingredients TEXT NOT NULL,             // List of ingredients
+          instructions TEXT NOT NULL,            // Cooking steps
+          mood TEXT NOT NULL                     // Associated mood
+      )`);
+  });
+  ```
+</details>
+
+<details>
+  <summary>Setup Middleware Configuration</summary>
+  
+  ```js
+  // Enable parsing of JSON bodies in requests
+  app.use(express.json());
+  
+  // Serve static files from the 'public' directory
+  // This allows serving HTML, CSS, and JavaScript files
+  app.use(express.static("public"));
+  ```
+</details>
+
+<details>
+  <summary>API Route Handler</summary>
+  
+  ```js
+  // Handle GET requests for recipes by mood
+  app.get("/api/recipes/:mood", (req, res) => {
+    // Extract mood parameter from URL
+    const mood = req.params.mood;
+  
+    // Query database for recipes matching the mood
+    db.all("SELECT * FROM recipes WHERE mood = ?", [mood], (err, rows) => {
+      // Handle database errors
+      if (err) {
+        res.status(500).json({ error: err.message });
+        return;
+      }
+  
+      // Handle case when no recipes are found
+      if (rows.length === 0) {
+        res.status(404).json({ message: "No recipes found for this mood" });
+        return;
+      }
+  
+      // Select a random recipe from the results
+      const randomRecipe = rows[Math.floor(Math.random() * rows.length)];
+      
+      // Send the recipe as JSON response
+      res.json(randomRecipe);
+    });
+  });
+  ```
+</details>
+
+<details>
+  <summary>Main Page Route: Handle GET requests to Root</summary>
+  
+  ```js
+  // Handle GET requests to the root URL
+  app.get("/", (req, res) => {
+    // Serve the index.html file from the public directory
+    res.sendFile(path.join(__dirname, "public", "index.html"));
+  });
+  ```
+</details>
+
+<details>
+  <summary>Start Express Server</summary>
+  
+  ```js
+  // Start the Express server and listen for connections
+  app.listen(port, () => {
+    // Log a message when the server starts successfully
+    console.log(`Server running at http://localhost:${port}`);
+  });
+  ```
+</details>
+
+<details>
+  <summary>server.js</summary>
+
 ```js
 const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
@@ -318,6 +440,8 @@ app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
 ```
+</details> 
+
 
 ## **Task 4: Frontend Development**
 
