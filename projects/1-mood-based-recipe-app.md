@@ -309,4 +309,3 @@ app.listen(port, () => {
 ## **Conclusion**
 
 ✅ Successfully blocked and managed web traffic using AWS WAF and Security Group! 🎉
-
