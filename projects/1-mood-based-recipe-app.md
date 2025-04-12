@@ -68,6 +68,121 @@
   ```
 </details>  
 
+<details>
+  <summary>Create an Array of recipe objects</summary>
+  
+  ```js
+  // Array of recipe objects, each containing:
+  // - name: The recipe title
+  // - ingredients: Comma-separated list of ingredients
+  // - instructions: Step-by-step cooking instructions
+  // - mood: The emotional state associated with the recipe
+  const recipes = [
+    {
+      name: "Chocolate Chip Cookies",
+      ingredients:
+        "2 1/4 cups flour, 1 cup butter, 3/4 cup sugar, 3/4 cup brown sugar, 2 eggs, 1 tsp vanilla, 1 tsp baking soda, 1/2 tsp salt, 2 cups chocolate chips",
+      instructions:
+        "Preheat oven to 375°F. Cream butter and sugars. Add eggs and vanilla. Mix in dry ingredients. Stir in chocolate chips. Drop spoonfuls onto baking sheet. Bake for 9-11 minutes.",
+      mood: "happy",
+    },
+    // ... more recipes for different moods
+    {
+      name: "Mac and Cheese",
+      ingredients:
+        "8 oz elbow macaroni, 2 cups cheddar cheese, 2 cups milk, 2 tbsp butter, 2 tbsp flour, salt, pepper",
+      instructions:
+        "Cook pasta. Make roux with butter and flour. Add milk and cheese. Stir until smooth. Combine with pasta. Bake at 350°F for 20 minutes.",
+      mood: "comfort",
+    },
+  ];
+  ```
+</details>  
+
+<details>
+  <summary>Create a Helper Wrapper function to convert SQLite's callback-based operations into Promises</summary>
+  
+  ```js
+  // Helper function to convert SQLite's callback-based operations into Promises
+  // This makes it easier to use async/await syntax
+  function runQuery(query, params = []) {
+    return new Promise((resolve, reject) => {
+      db.run(query, params, function (err) {
+        // If there's an error, reject the promise with the error
+        if (err) reject(err);
+        // Otherwise, resolve with 'this' context (contains lastID, changes, etc.)
+        else resolve(this);
+      });
+    });
+  }
+  ```
+</details>  
+
+<details>
+  <summary>Create Function to Populate SQLite Database with recipes</summary>
+  
+  ```js
+  async function populateDatabase() {
+    try {
+      // Step 1: Create the recipes table if it doesn't exist
+      // Define columns: id, name, ingredients, instructions, mood
+      await runQuery(`CREATE TABLE IF NOT EXISTS recipes (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,  // Unique identifier for each recipe
+        name TEXT NOT NULL,                    // Recipe name cannot be null
+        ingredients TEXT NOT NULL,             // List of ingredients
+        instructions TEXT NOT NULL,            // Cooking instructions
+        mood TEXT NOT NULL                     // Associated mood
+      )`);
+  
+      // Step 2: Clear any existing data from the table
+      // This ensures we don't have duplicate recipes
+      await runQuery("DELETE FROM recipes");
+  
+      // Step 3: Prepare an SQL statement for inserting recipes
+      // Using prepared statements prevents SQL injection and improves performance
+      const stmt = db.prepare(
+        "INSERT INTO recipes (name, ingredients, instructions, mood) VALUES (?, ?, ?, ?)"
+      );
+  
+      // Step 4: Insert each recipe into the database
+      for (const recipe of recipes) {
+        // Wait for each insert to complete before moving to the next
+        await new Promise((resolve, reject) => {
+          stmt.run(
+            recipe.name,
+            recipe.ingredients,
+            recipe.instructions,
+            recipe.mood,
+            function (err) {
+              if (err) reject(err);
+              else resolve(this);
+            }
+          );
+        });
+      }
+      // Step 5: Finalize the prepared statement to release resources
+      stmt.finalize();
+  
+      console.log("Database populated with sample recipes!");
+    } catch (err) {
+      // Handle any errors that occur during the process
+      console.error("Error:", err);
+    } finally {
+      // Always close the database connection, even if there's an error
+      db.close();
+    }
+  }
+  ```
+</details>  
+
+<details>
+  <summary>Execute the Function to Populate SQLite Database</summary>
+
+  ```js
+  // Call the async function to start populating the database
+  populateDatabase();
+  ```
+</details>  
 
 <details>
   <summary>populate-db.js</summary>
