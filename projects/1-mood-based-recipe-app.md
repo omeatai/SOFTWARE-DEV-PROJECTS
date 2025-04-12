@@ -56,7 +56,21 @@
 - [ ] Create populate-db.js file:
 
 <details>
-  <summary>populate-db.js CODE</summary>
+  <summary>Import SQLite3 and Create a new database connection to recipes.db</summary>
+  
+  ```js
+  // Import SQLite3 and enable verbose mode for detailed error messages
+  const sqlite3 = require("sqlite3").verbose();
+  
+  // Create a new database connection to recipes.db
+  // If the file doesn't exist, it will be created
+  const db = new sqlite3.Database("recipes.db");
+  ```
+</details>  
+
+
+<details>
+  <summary>populate-db.js</summary>
   
   ```js
   const sqlite3 = require("sqlite3").verbose();
