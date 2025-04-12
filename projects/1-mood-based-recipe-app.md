@@ -36,7 +36,7 @@
 </details>
 
 <details>
-  <summary>Initialize a new Node.js project:</summary>
+  <summary>Initialize a new Node.js project</summary>
   
   ```
   npm init -y
@@ -44,7 +44,7 @@
 </details>
 
 <details>
-  <summary>Install required dependencies:</summary>
+  <summary>Install required dependencies</summary>
   
   ```
   npm install express sqlite3 tailwindcss nodemon
@@ -53,78 +53,84 @@
 
 ## **Task 2: Database Setup**
 
-- [ ] Create populate-db.js file with the following content:
+- [ ] Create populate-db.js file:
 
-```js
-const sqlite3 = require("sqlite3").verbose();
-const db = new sqlite3.Database("recipes.db");
-
-// Create a promise-based wrapper for database operations
-function runQuery(query, params = []) {
-  return new Promise((resolve, reject) => {
-    db.run(query, params, function (err) {
-      if (err) reject(err);
-      else resolve(this);
-    });
-  });
-}
-
-async function populateDatabase() {
-  try {
-    // Create table
-    await runQuery(`CREATE TABLE IF NOT EXISTS recipes (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT NOT NULL,
-                ingredients TEXT NOT NULL,
-                instructions TEXT NOT NULL,
-                mood TEXT NOT NULL
-            )`);
-
-    // Clear existing data
-    await runQuery("DELETE FROM recipes");
-
-    // Insert sample recipes
-    const recipes = [
-      {
-        name: "Chocolate Chip Cookies",
-        ingredients:
-          "2 1/4 cups flour, 1 cup butter, 3/4 cup sugar, 3/4 cup brown sugar, 2 eggs, 1 tsp vanilla, 1 tsp baking soda, 1/2 tsp salt, 2 cups chocolate chips",
-        instructions:
-          "Preheat oven to 375°F. Cream butter and sugars. Add eggs and vanilla. Mix in dry ingredients. Stir in chocolate chips. Drop spoonfuls onto baking sheet. Bake for 9-11 minutes.",
-        mood: "happy",
-      },
-      // ... (other recipes)
-    ];
-
-    const stmt = db.prepare(
-      "INSERT INTO recipes (name, ingredients, instructions, mood) VALUES (?, ?, ?, ?)"
-    );
-    for (const recipe of recipes) {
-      await new Promise((resolve, reject) => {
-        stmt.run(
-          recipe.name,
-          recipe.ingredients,
-          recipe.instructions,
-          recipe.mood,
-          function (err) {
-            if (err) reject(err);
-            else resolve(this);
-          }
-        );
+<details>
+  <summary>populate-db.js CODE</summary>
+  
+  ```js
+  const sqlite3 = require("sqlite3").verbose();
+  const db = new sqlite3.Database("recipes.db");
+  
+  // Create a promise-based wrapper for database operations
+  function runQuery(query, params = []) {
+    return new Promise((resolve, reject) => {
+      db.run(query, params, function (err) {
+        if (err) reject(err);
+        else resolve(this);
       });
-    }
-    stmt.finalize();
-
-    console.log("Database populated with sample recipes!");
-  } catch (err) {
-    console.error("Error:", err);
-  } finally {
-    db.close();
+    });
   }
-}
+  
+  async function populateDatabase() {
+    try {
+      // Create table
+      await runQuery(`CREATE TABLE IF NOT EXISTS recipes (
+                  id INTEGER PRIMARY KEY AUTOINCREMENT,
+                  name TEXT NOT NULL,
+                  ingredients TEXT NOT NULL,
+                  instructions TEXT NOT NULL,
+                  mood TEXT NOT NULL
+              )`);
+  
+      // Clear existing data
+      await runQuery("DELETE FROM recipes");
+  
+      // Insert sample recipes
+      const recipes = [
+        {
+          name: "Chocolate Chip Cookies",
+          ingredients:
+            "2 1/4 cups flour, 1 cup butter, 3/4 cup sugar, 3/4 cup brown sugar, 2 eggs, 1 tsp vanilla, 1 tsp baking soda, 1/2 tsp salt, 2 cups chocolate chips",
+          instructions:
+            "Preheat oven to 375°F. Cream butter and sugars. Add eggs and vanilla. Mix in dry ingredients. Stir in chocolate chips. Drop spoonfuls onto baking sheet. Bake for 9-11 minutes.",
+          mood: "happy",
+        },
+        // ... (other recipes)
+      ];
+  
+      const stmt = db.prepare(
+        "INSERT INTO recipes (name, ingredients, instructions, mood) VALUES (?, ?, ?, ?)"
+      );
+      for (const recipe of recipes) {
+        await new Promise((resolve, reject) => {
+          stmt.run(
+            recipe.name,
+            recipe.ingredients,
+            recipe.instructions,
+            recipe.mood,
+            function (err) {
+              if (err) reject(err);
+              else resolve(this);
+            }
+          );
+        });
+      }
+      stmt.finalize();
+  
+      console.log("Database populated with sample recipes!");
+    } catch (err) {
+      console.error("Error:", err);
+    } finally {
+      db.close();
+    }
+  }
+  
+  populateDatabase();
+  ```
+</details>
 
-populateDatabase();
-```
+
 
 ## **Task 3: Backend Server Setup**
 
