@@ -254,7 +254,7 @@ app.listen(port, () => {
 </html>
 ```
 
-## **Task 6: Testing the Load Balancer**
+## **Task 5: Testing the Load Balancer**
 
 - [ ] Navigate to **Load Balancers** and copy DNS name from **Web-server-LB**.
 - [ ] Paste the DNS name in a browser to confirm round-robin response from `server A` and `server B`.
