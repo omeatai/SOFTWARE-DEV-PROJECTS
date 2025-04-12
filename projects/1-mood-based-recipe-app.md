@@ -26,9 +26,9 @@
 
 ## **Task 1: Project Setup**
 
-- [ ] Create a new project directory:
 <details>
-  <summary>CODE</summary>
+  <summary>Create a new project directory</summary>
+  
   ```
   mkdir mood-recipes
   cd mood-recipes
