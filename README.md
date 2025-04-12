@@ -12,7 +12,7 @@ by Ifeanyi Omeata
 
 ###
 
-<img src="https://github.com/user-attachments/assets/35150d83-5547-4985-a9d9-b5fa8ddda1c2" width="520" height="520" />
+<img src="https://github.com/user-attachments/assets/35150d83-5547-4985-a9d9-b5fa8ddda1c2" width="420" height="520" />
 
 # 1 - Mood Based Recipe App ✅
 
