@@ -24,10 +24,19 @@ by Ifeanyi Omeata
 - [ ] Build a responsive frontend with Tailwind CSS
 - [ ] Allow users to get new recipe suggestions for their selected mood
 
-## **Task 1: Sign in to AWS Management Console**
+## **Prerequisites**
 
-- [ ] Click on **Open Console** to access AWS Console.
-- [ ] Set the default region to **US East (N. Virginia) us-east-1**.
+- [ ] Install Node.js from nodejs.org
+- [ ] Basic understanding of JavaScript, HTML, and CSS
+- [ ] A code editor (VS Code recommended)
+
+## **Task 1: Project Setup**
+
+- [ ] Create a new project directory:
+```
+mkdir mood-recipes
+cd mood-recipes
+```
 
 ## **Task 2: Creating a Security Group for the Load Balancer**
 
