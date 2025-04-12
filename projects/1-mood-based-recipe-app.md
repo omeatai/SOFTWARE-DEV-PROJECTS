@@ -447,6 +447,144 @@ app.listen(port, () => {
 
 - [ ] Create public/index.html:
 
+<details>
+  <summary>Document Setup and Meta Information</summary>
+  
+  ```html
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <!-- Character encoding for proper text rendering -->
+      <meta charset="UTF-8" />
+      <!-- Responsive viewport settings for mobile devices -->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <!-- Page title shown in browser tab -->
+      <title>Mood Recipes</title>
+      
+      <!-- External Resources -->
+      <!-- Tailwind CSS from CDN for styling -->
+      <script src="https://cdn.tailwindcss.com"></script>
+      <!-- Custom CSS file for additional styles -->
+      <link rel="stylesheet" href="styles.css" />
+    </head>
+  
+  </html>
+  ```
+</details>
+
+<details>
+  <summary>Setup Main Container and Header Title</summary>
+  
+  ```html
+<body class="bg-gray-100 min-h-screen">
+    <!-- Main container with responsive padding and margin -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- Main heading with decorative styling -->
+        <h1 class="text-4xl font-bold text-center mb-8 text-indigo-600">
+            Mood Recipes
+        </h1>
+    </div>
+</body>
+  ```
+</details>
+
+<details>
+  <summary>Setup Mood Selection Card</summary>
+  
+  ```html
+  <!-- Card container with white background and shadow -->
+  <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
+      <!-- Mood selection prompt -->
+      <h2 class="text-xl font-semibold mb-4">How are you feeling today?</h2>
+  
+      <!-- Grid layout for mood buttons -->
+      <div class="grid grid-cols-2 gap-4 mb-6">
+          <!-- Happy mood button -->
+          <button
+              class="mood-btn bg-blue-100 hover:bg-blue-200 text-blue-800 py-2 px-4 rounded"
+              data-mood="happy"
+          >
+              😊 Happy
+          </button>
+          
+          <!-- Energetic mood button -->
+          <button
+              class="mood-btn bg-green-100 hover:bg-green-200 text-green-800 py-2 px-4 rounded"
+              data-mood="energetic"
+          >
+              ⚡ Energetic
+          </button>
+          
+          <!-- Cozy mood button -->
+          <button
+              class="mood-btn bg-yellow-100 hover:bg-yellow-200 text-yellow-800 py-2 px-4 rounded"
+              data-mood="cozy"
+          >
+              🏠 Cozy
+          </button>
+          
+          <!-- Comfort mood button -->
+          <button
+              class="mood-btn bg-red-100 hover:bg-red-200 text-red-800 py-2 px-4 rounded"
+              data-mood="comfort"
+          >
+              ❤️ Comfort
+          </button>
+      </div>
+  </div>
+  ```
+</details>
+
+<details>
+  <summary>Setup Recipe Display Section</summary>
+  
+  ```html
+  <!-- Hidden container for recipe details -->
+  <div id="recipe-container" class="hidden">
+      <div class="border-t pt-4">
+          <!-- Recipe title placeholder -->
+          <h3 class="text-lg font-semibold mb-2" id="recipe-name"></h3>
+          
+          <!-- Ingredients section -->
+          <div class="mb-4">
+              <h4 class="font-medium text-gray-700">Ingredients:</h4>
+              <!-- Dynamic list of ingredients -->
+              <ul id="ingredients" class="list-disc pl-5 text-gray-600"></ul>
+          </div>
+          
+          <!-- Instructions section -->
+          <div class="mb-4">
+              <h4 class="font-medium text-gray-700">Instructions:</h4>
+              <!-- Dynamic instructions text -->
+              <p id="instructions" class="text-gray-600"></p>
+          </div>
+          
+          <!-- Currently commented out "Get Another Recipe" button -->
+          <!-- <button
+              id="new-recipe"
+              class="w-full bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700"
+          >
+              Get Another Recipe
+          </button> -->
+      </div>
+  </div>
+  ```
+</details>
+
+<details>
+  <summary>Script Integration and Closing Tags</summary>
+  
+  ```html
+      <!-- Link to JavaScript file for functionality -->
+      <script src="script.js"></script>
+    </body>
+  </html>
+  ```
+</details>
+
+<details>
+  <summary>server.js</summary>
+  
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -518,6 +656,7 @@ app.listen(port, () => {
   </body>
 </html>
 ```
+</details>
 
 - [ ] Create public/styles.css:
 ```css
