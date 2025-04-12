@@ -8,11 +8,11 @@ by Ifeanyi Omeata
 
 ###
 
-<a href=""><img src="https://github.com/user-attachments/assets/d7e5c842-be28-484c-8efb-fd8f02808ff1" width="720" height="400" /></a>
+<a href=""><img src="https://github.com/user-attachments/assets/039dee23-0b87-43e9-afeb-9f58f592e7d2" width="720" height="400" /></a>
 
 ###
 
-<img src="https://github.com/user-attachments/assets/c6590199-2969-4244-8347-da1c1c39da09" width="920" height="520" />
+<img src="https://github.com/user-attachments/assets/35150d83-5547-4985-a9d9-b5fa8ddda1c2" width="920" height="520" />
 
 # 1 - Mood Based Recipe App ✅
 
@@ -36,6 +36,16 @@ by Ifeanyi Omeata
 ```
 mkdir mood-recipes
 cd mood-recipes
+```
+
+- [ ] Initialize a new Node.js project:
+```
+npm init -y
+```
+
+- [ ] [ ] Install required dependencies:
+```
+npm install express sqlite3 tailwindcss nodemon
 ```
 
 ## **Task 2: Creating a Security Group for the Load Balancer**
