@@ -4,7 +4,7 @@ by Ifeanyi Omeata
 #### Join me as I complete 200+ Software Dev Projects. Follow my Youtube channel at https://www.youtube.com/@omeatai
 
 <details>
-  <summary>Project 1 - Blocking Web Traffic with AWS WAF and Security Group</summary>
+  <summary>1 - Mood Based Recipe App</summary>
 
 ###
 
@@ -14,14 +14,15 @@ by Ifeanyi Omeata
 
 <img src="https://github.com/user-attachments/assets/c6590199-2969-4244-8347-da1c1c39da09" width="920" height="520" />
 
-# Project 22: Blocking Web Traffic with AWS WAF and Security Group ✅
+# 1 - Mood Based Recipe App ✅
 
 ## **Overview**
 
-- [ ] This project involves configuring AWS WAF to block web traffic and secure web applications against common exploits.
-- [ ] Learn how to set up security rules to block attack patterns such as SQL injection and cross-site scripting.
-- [ ] Deploy AWS WAF with an Application Load Balancer (ALB) to manage traffic distribution to multiple web servers.
-- [ ] Understand web traffic filtering using custom rules, tuning rules, and monitoring traffic via AWS WAF.
+- [ ] Create a web application that recommends recipes based on user's mood
+- [ ] Use Express.js for the backend server
+- [ ] Implement SQLite for recipe storage
+- [ ] Build a responsive frontend with Tailwind CSS
+- [ ] Allow users to get new recipe suggestions for their selected mood
 
 ## **Task 1: Sign in to AWS Management Console**
 
