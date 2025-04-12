@@ -112,67 +112,112 @@ const sqlite3 = require('sqlite3').verbose();
     populateDatabase();
 ```
 
-## **Task 3: Steps to Create the Web Servers**
+## **Task 3: Backend Server Setup**
 
-- [ ] Navigate to **Instances** → **Launch instance**.
-- [ ] Configure `webserver-A`:
-  - **AMI:** Amazon Linux 2
-  - **Instance Type:** `t2.micro`
-  - **Key Pair:** Create `myKey`
-  - **Network Settings:** Auto-assign public IP: `Enable`
-  - **Create Security Group:** `webserver-SG`
-    - **HTTP** from `LoadBalancer-SG`
-    - **SSH** from Anywhere
-- [ ] Add **User Data** for `webserver-A`:
-  ```bash
-  #!/bin/bash
-  sudo su
-  yum update -y
-  yum install -y httpd
-  systemctl start httpd
-  systemctl enable httpd
-  echo "Response coming from server A" > /var/www/html/index.html
-  ```
-- [ ] Launch `webserver-A`.
-- [ ] Repeat for `webserver-B` with:
-  ```bash
-  #!/bin/bash
-  sudo su
-  yum update -y
-  yum install -y httpd
-  systemctl start httpd
-  systemctl enable httpd
-  echo "Response coming from server B" > /var/www/html/index.html
-  ```
-- [ ] Ensure both instances are running in EC2 Dashboard.
+- [ ] Create server.js file:
+```js
+const express = require('express');
+    const sqlite3 = require('sqlite3').verbose();
+    const path = require('path');
 
-## **Task 4: Creating a Load Balancer**
+    const app = express();
+    const port = 3000;
 
-- [ ] Navigate to **Target Groups** → Click **Create target group**.
-- [ ] Configure Target Group:
-  - **Name:** `web-server-TG`
-  - **Health Check Path:** `/index.html`
-- [ ] Register both instances and create the target group.
-- [ ] Navigate to **Load Balancers** → Click **Create load balancer**.
-- [ ] Configure Application Load Balancer:
-  - **Name:** `Web-server-LB`
-  - **Scheme:** `Internet-facing`
-  - **IP** Address Type: `IPv4`
-  - **Security Group:** `LoadBalancer-SG`
-  - **Listeners:** HTTP, Port `80`, Forward to `web-server-TG`
-- [ ] Click **Create load balancer**.
+    // Initialize SQLite database
+    const db = new sqlite3.Database('recipes.db');
 
-## **Task 5: Create a Bastion Host Server**
+    // Create tables if they don't exist
+    db.serialize(() => {
+        db.run(`CREATE TABLE IF NOT EXISTS recipes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            ingredients TEXT NOT NULL,
+            instructions TEXT NOT NULL,
+            mood TEXT NOT NULL
+        )`);
+    });
 
-- [ ] Navigate to **Instances** → **Launch instance**.
-- [ ] Configure `bastion-server`:
-  - **AMI:** Amazon Linux 2
-  - **Instance Type:** `t2.micro`
-  - **Key Pair:** Choose `myKey`
-  - **Network Settings:** Auto-assign public IP: `Enable`
-  - **Create Security Group:** `bastion-SG`
-    - **SSH** from Anywhere
-- [ ] Launch `bastion-server`.
+    // Middleware
+    app.use(express.json());
+    app.use(express.static('public'));
+
+    // API Routes
+    app.get('/api/recipes/:mood', (req, res) => {
+        const mood = req.params.mood;
+        db.all('SELECT * FROM recipes WHERE mood = ?', [mood], (err, rows) => {
+            if (err) {
+                res.status(500).json({ error: err.message });
+                return;
+            }
+            if (rows.length === 0) {
+                res.status(404).json({ message: 'No recipes found for this mood' });
+                return;
+            }
+            const randomRecipe = rows[Math.floor(Math.random() * rows.length)];
+            res.json(randomRecipe);
+        });
+    });
+
+    // Serve the main page
+    app.get('/', (req, res) => {
+        res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    });
+
+    // Start server
+    app.listen(port, () => {
+        console.log(`Server running at http://localhost:${port}`);
+    });
+```
+
+## **Task 4: Frontend Development**
+
+- [ ] Create public/index.html:
+```html
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Mood Recipes</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body class="bg-gray-100 min-h-screen">
+        <div class="container mx-auto px-4 py-8">
+            <h1 class="text-4xl font-bold text-center mb-8 text-indigo-600">Mood Recipes</h1>
+            
+            <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-semibold mb-4">How are you feeling today?</h2>
+                
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <button class="mood-btn bg-blue-100 hover:bg-blue-200 text-blue-800 py-2 px-4 rounded" data-mood="happy">😊 Happy</button>
+                    <button class="mood-btn bg-green-100 hover:bg-green-200 text-green-800 py-2 px-4 rounded" data-mood="energetic">⚡ Energetic</button>
+                    <button class="mood-btn bg-yellow-100 hover:bg-yellow-200 text-yellow-800 py-2 px-4 rounded" data-mood="cozy">🏠 Cozy</button>
+                    <button class="mood-btn bg-red-100 hover:bg-red-200 text-red-800 py-2 px-4 rounded" data-mood="comfort">❤️ Comfort</button>
+                </div>
+
+                <div id="recipe-container" class="hidden">
+                    <div class="border-t pt-4">
+                        <h3 class="text-lg font-semibold mb-2" id="recipe-name"></h3>
+                        <div class="mb-4">
+                            <h4 class="font-medium text-gray-700">Ingredients:</h4>
+                            <ul id="ingredients" class="list-disc pl-5 text-gray-600"></ul>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="font-medium text-gray-700">Instructions:</h4>
+                            <p id="instructions" class="text-gray-600"></p>
+                        </div>
+                        <button id="new-recipe" class="w-full bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700">
+                            Get Another Recipe
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="script.js"></script>
+    </body>
+    </html>
+```
 
 ## **Task 6: Testing the Load Balancer**
 
