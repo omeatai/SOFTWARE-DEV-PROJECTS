@@ -27,11 +27,14 @@
 ## **Task 1: Project Setup**
 
 - [ ] Create a new project directory:
+<details>
+  <summary>CODE</summary>
+  ```
+  mkdir mood-recipes
+  cd mood-recipes
+  ```
+</details>
 
-```
-mkdir mood-recipes
-cd mood-recipes
-```
 
 - [ ] Initialize a new Node.js project:
 
