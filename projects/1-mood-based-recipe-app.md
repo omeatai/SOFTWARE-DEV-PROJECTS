@@ -254,58 +254,96 @@ app.listen(port, () => {
 </html>
 ```
 
-## **Task 5: Testing the Load Balancer**
+- [ ] Create public/styles.css:
+```css
+    .mood-btn {
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
 
-- [ ] Navigate to **Load Balancers** and copy DNS name from **Web-server-LB**.
-- [ ] Paste the DNS name in a browser to confirm round-robin response from `server A` and `server B`.
-- [ ] Also SSH into the Bastion-server and use curl to send a GET request to the DNS name to confirm round-robin response from `server A` and `server B`.
+    .mood-btn:hover {
+        transform: translateY(-2px);
+    }
 
-## **Task 7: Block All other IPs with Security Group: Only Allow specific IP or Group of IPs**
+    #recipe-container {
+        transition: opacity 0.3s ease;
+    }
 
-- [ ] Navigate to **Security Group** in **EC2 (Compute)**.
-- [ ] Change the InBound rule of the Load Balancer Security Group from All IPs (0.0.0.0/0) to `Public IP of Bastion Host` or `Your IP address`.
-- [ ] Navigate to **Load Balancers** and copy again the DNS name from **Web-server-LB**.
-- [ ] Paste the DNS name in a browser to confirm round-robin response from `server A` and `server B` is NOT working anymore.
-- [ ] SSH into the Bastion-server and use curl to send a GET request to the DNS name to confirm round-robin response from `server A` and `server B` is still working.
+    .hidden {
+        display: none;
+    }
+```
 
-## **Task 8: Creating an IP Set**
+- [ ] Create public/script.js:
+```js
+    document.addEventListener('DOMContentLoaded', () => {
+        const moodButtons = document.querySelectorAll('.mood-btn');
+        const recipeContainer = document.getElementById('recipe-container');
+        const recipeName = document.getElementById('recipe-name');
+        const ingredientsList = document.getElementById('ingredients');
+        const instructions = document.getElementById('instructions');
+        const newRecipeBtn = document.getElementById('new-recipe');
 
-- [ ] Navigate to **WAF & Shield** → **IP Sets**.
-- [ ] Click **Create IP sets** and configure:
-  - **Name:** `MyIPset`
-  - **Description:** `IP set to block my public IP`
-  - **Region:** `US EAST (N. Virginia)`
-  - **IP Version:** `IPv4`
-  - **IP address:** The Public IP of the Bastion Host or Your `Public IP/32`
-- [ ] Click **Create IP set**.
+        let currentMood = null;
 
-## **Task 9: Creating a Web ACL**
+        moodButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                currentMood = button.dataset.mood;
+                getRecipe(currentMood);
+            });
+        });
 
-- [ ] Navigate to **WAF dashboard** → **Web ACLs** → Click **Create web ACL**.
-- [ ] Configure:
-  - **Resource type:** `Regional resources`
-  - **Region:** `US EAST (N. Virginia)`
-  - **Name:** `MywebACL`
-- [ ] Associate **ALB** by Add **AWS resources**.
-- [ ] Under **Rules**, **Add rule**:
-  - **Rule type:** `IP set`
-  - **Name:** `MywebACL-rule`
-  - **IP set:** `MyIPset`
-  - **Action:** `Block`
-- [ ] Click **Create web ACL**.
+        newRecipeBtn.addEventListener('click', () => {
+            if (currentMood) {
+                getRecipe(currentMood);
+            }
+        });
 
-## **Task 10: Testing the Working of the WAF**
+        async function getRecipe(mood) {
+            try {
+                const response = await fetch(`/api/recipes/${mood}`);
+                if (!response.ok) {
+                    throw new Error('No recipes found for this mood');
+                }
+                const recipe = await response.json();
+                
+                recipeName.textContent = recipe.name;
+                ingredientsList.innerHTML = recipe.ingredients.split(',').map(ingredient => 
+                    `<li>${ingredient.trim()}</li>`
+                ).join('');
+                instructions.textContent = recipe.instructions;
+                
+                recipeContainer.classList.remove('hidden');
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+    });
+```
 
-- [ ] Attempt to access ALB DNS name using Curl from Bastion Host.
-- [ ] Expect a **403 Forbidden error** showing WAF is functioning.
+## **Task 5: Running the Application**
 
-## **Task 11: Unblocking the IP**
+- [ ] Populate the database:
+```
+node populate-db.js
+```
 
-- [ ] Navigate to **WAF & Shield** → **IP Sets** → `MyIPset`.
-- [ ] Delete your public IP from the set.
-- [ ] Wait, and then retry accessing the ALB DNS name.
-- [ ] Confirm access is again available from Bastion Host.
+- [ ] Start the server:
+```
+node server.js
+```
+
+- [ ] Open your browser and navigate to:
+```
+http://localhost:3000
+```
+
+## **Task 6: Testing the Application**
+
+- [ ] Click on different mood buttons to see recipe recommendations
+- [ ] Verify that ingredients and instructions are displayed correctly
+- [ ] Check that the UI is responsive and works well on different screen sizes
 
 ## **Conclusion**
 
-✅ Successfully blocked and managed web traffic using AWS WAF and Security Group! 🎉
+✅ Successfully created a mood-based recipe recommendation app! 🎉
