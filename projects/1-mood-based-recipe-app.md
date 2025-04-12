@@ -6,7 +6,7 @@
 
 ###
 
-<img src="https://github.com/user-attachments/assets/35150d83-5547-4985-a9d9-b5fa8ddda1c2" width="420" height="620" />
+<img src="https://github.com/user-attachments/assets/1d7d0be5-b47f-4dd8-8483-041fc2508bb4" width="420" height="620" />
 
 # 1 - Mood Based Recipe App [JS,HTML,CSS,Tailwindcss,Express,Node.js,SQLite]✅
 
