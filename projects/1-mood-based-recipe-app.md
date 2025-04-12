@@ -583,7 +583,7 @@ app.listen(port, () => {
 </details>
 
 <details>
-  <summary>server.js</summary>
+  <summary>index.html</summary>
   
 ```html
 <!DOCTYPE html>
