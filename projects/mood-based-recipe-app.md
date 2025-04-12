@@ -1,5 +1,4 @@
-<details>
-  <summary>1 - Mood Based Recipe App</summary>
+## 1 - Mood Based Recipe App
 
 ###
 
@@ -311,4 +310,3 @@ app.listen(port, () => {
 
 ✅ Successfully blocked and managed web traffic using AWS WAF and Security Group! 🎉
 
-</details>
