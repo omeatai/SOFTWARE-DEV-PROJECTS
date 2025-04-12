@@ -1,8 +1,8 @@
-## Project 1 - Mood Based Recipe App
+## Project 1 - Mood Based Recipe App [JS,HTML,CSS,Express,Node.js,SQLite]
 
 ###
 
-<a href=""><img src="https://github.com/user-attachments/assets/039dee23-0b87-43e9-afeb-9f58f592e7d2" width="720" height="400" /></a>
+<a href=""><img src="https://github.com/user-attachments/assets/bc52f670-95f3-41f5-b3cd-24906eb4f5d5" width="720" height="400" /></a>
 
 ###
 
