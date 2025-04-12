@@ -35,18 +35,21 @@
   ```
 </details>
 
+<details>
+  <summary>Initialize a new Node.js project:</summary>
+  
+  ```
+  npm init -y
+  ```
+</details>
 
-- [ ] Initialize a new Node.js project:
-
-```
-npm init -y
-```
-
-- [ ] Install required dependencies:
-
-```
-npm install express sqlite3 tailwindcss nodemon
-```
+<details>
+  <summary>Install required dependencies:</summary>
+  
+  ```
+  npm install express sqlite3 tailwindcss nodemon
+  ```
+</details>
 
 ## **Task 2: Database Setup**
 
