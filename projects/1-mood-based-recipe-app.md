@@ -8,7 +8,7 @@
 
 <img src="https://github.com/user-attachments/assets/35150d83-5547-4985-a9d9-b5fa8ddda1c2" width="420" height="620" />
 
-# 1 - Mood Based Recipe App ✅
+# 1 - Mood Based Recipe App [JS,HTML,CSS,Express,Node.js,SQLite]✅
 
 ## **Overview**
 
