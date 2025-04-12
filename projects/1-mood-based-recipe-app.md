@@ -559,13 +559,12 @@ app.listen(port, () => {
               <p id="instructions" class="text-gray-600"></p>
           </div>
           
-          <!-- Currently commented out "Get Another Recipe" button -->
-          <!-- <button
+          <button
               id="new-recipe"
               class="w-full bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700"
           >
               Get Another Recipe
-          </button> -->
+          </button>
       </div>
   </div>
   ```
