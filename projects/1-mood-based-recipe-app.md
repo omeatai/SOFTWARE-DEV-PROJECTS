@@ -1,4 +1,4 @@
-## 1 - Mood Based Recipe App
+## Project 1 - Mood Based Recipe App
 
 ###
 
